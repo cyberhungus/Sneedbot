@@ -12,7 +12,7 @@ import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 
 public class Bot {
-static  String token = "ODIxMzY0NTcwOTY2MzI3MzM3.YFCpXQ.v0hQsSgDl-Tugo36YAMQro8qO6o";
+static  String token =;
     public static void main(String[] args) {
         BotMain bot = new BotMain(token);
 

@@ -23,12 +23,10 @@ public class userAnalyzer { //soll messagewrapper klassen auf ihren user untersu
 
     public void analyse(MessageWrapper message){
         if (message.getUser().equals(bigboss)){
-
                     adminHandler.checkContent(message);
         }
         else if (message.getUser().equals(auctionHouseName)){
             checkIfRegisteredWithAuction(message.getChannel());
-           // System.out.println("Auctioneer Detected, passing message on");
             auctionHandler.checkContent(message);
 
         }

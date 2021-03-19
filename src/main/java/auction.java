@@ -3,12 +3,14 @@ public class auction {
    private String letter;
    private int price;
    private Boolean active;
+   private String user;
 
-    auction(int number, String letter, int price){
+    auction(int number, String letter, int price, String user){
         this.number=number;
         this.letter=letter;
         this.price=price;
         this.active=true;
+        this.user = user;
     }
 
     public int getNumber() {
@@ -26,6 +28,10 @@ public class auction {
         active=false;
     }
 
+    public String getUser() {
+        return user;
+    }
+
     @Override
     public String toString() {
         return "auction{" +
@@ -33,6 +39,7 @@ public class auction {
                 ", letter='" + letter + '\'' +
                 ", price=" + price +
                 ", active=" + active +
+                ", user='" + user + '\'' +
                 '}';
     }
 }

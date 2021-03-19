@@ -9,23 +9,38 @@ import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.event.domain.message.MessageUpdateEvent;
 import discord4j.core.object.entity.User;
+import discord4j.core.object.entity.channel.Channel;
 import discord4j.discordjson.json.gateway.MessageReactionAdd;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class BotMain {
     private String token;
     GatewayDiscordClient client;
     String ownID;
     static BotMain instance;
-
+    private Map<String, List<Snowflake>> channels = new HashMap<>();
     BotMain(String token){
         this.token=token;
         createClient();
+        //findChannels();
+        //registerWithBot();
         createMessageReceiver();
         createMessageUpdateListener();
         this.instance=this;
+
+
         client.onDisconnect().block();
 
 
+    }
+
+    private void registerWithBot() {
+        getInfoChannel().forEach(snowflake -> messager(snowflake,"Hello, Sneedbot has come online"));
+        getInfoChannel().forEach(snowflake -> messager(snowflake,"!register"));
     }
 
     public static BotMain getInstance(){
@@ -64,13 +79,8 @@ public class BotMain {
                     String time = event.getMessage().getTimestamp().toString();
                     String userID = event.getMessage().getUserData().discriminator();
                     Snowflake channelSnowflake = event.getMessage().getChannelId();
-                    //System.out.println("Message from: " + user);
-                    //System.out.println("Message Content: " + message);
-                    //System.out.println("Message time: " + time);
-                    //System.out.println("Message channel: " + channel);
-
                     MessageWrapper mw= new MessageWrapper(user,message,time,channelSnowflake);
-                    System.out.println(mw.toString());
+                    //System.out.println(mw.toString());
 
 
                     if (!userID.equals(ownID)){ //verhindert dass sich der Bot selbst antwortet
@@ -94,4 +104,24 @@ public class BotMain {
         client.getChannelById(channel).subscribe(value -> value.getRestChannel().createMessage(reply).subscribe());
     }
 
+    public void findChannels(){ //von eike geklaut
+        client.getGuilds().toStream().forEach(
+                guild -> guild.getChannels().toStream().filter(channel -> channel.getType() == Channel.Type.GUILD_TEXT).filter(channel -> getChannels()
+                        .containsKey(channel.getName())).forEach(channel -> getChannels()
+                        .get(channel.getName())
+                        .add(channel.getId())));
+        System.out.println(channels.toString());
+    }
+    public Map<String, List<Snowflake>> getChannels() {
+        return channels;
+    }
+    public Stream<Snowflake> getAuctionChannel() {
+        return channels.get("auction").stream();
+    }
+    public Stream<Snowflake> getInfoChannel() {
+        return channels.get("info").stream();
+    }
+    public Stream<Snowflake> getLogChannel() {
+        return channels.get("log").stream();
+    }
 }

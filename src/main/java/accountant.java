@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class accountant {
     String stock="";
     ArrayList<auction> pastAuctions =new ArrayList<auction>();
+    ArrayList<auction> failedAuctions =new ArrayList<auction>();
     static accountant instance;
 
 
@@ -23,7 +24,11 @@ public class accountant {
         saleBoy.desireHandler(pastAuction.getLetter());
         System.out.println("In the StoreRoom:" + stock);
     }
-
+    void failAuction(auction pastAuction){
+        pastAuction.finish();
+        failedAuctions.add(pastAuction);
+        System.out.println("Failed Auction: "+pastAuction);
+    }
 
 
 

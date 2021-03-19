@@ -72,7 +72,7 @@ public class saleAuthority {
     }
 
     public int calculateCompletedLetters(){
-        return secureCopyOfSearchTerm.length()-desired.size();
+        return secureCopyOfSearchTerm.length()-desired.size()+1;
     }
 
 

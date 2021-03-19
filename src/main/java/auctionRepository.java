@@ -38,4 +38,10 @@ public class auctionRepository {
         acc.passAuction(activeAuctions.get(position));
         activeAuctions.remove(position);
     }
+    public void finishAuctionFailure(int query){
+        int position = getAuctionID(query);
+        accountant acc = accountant.getInstance();
+        acc.failAuction(activeAuctions.get(position));
+        activeAuctions.remove(position);
+    }
 }
